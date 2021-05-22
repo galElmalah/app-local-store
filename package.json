@@ -5,9 +5,12 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "publish": "np",
+    "release": "np",
     "prepare": "tsc"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Gal Elmalah",
   "license": "ISC",
   "dependencies": {},
