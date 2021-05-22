@@ -8,6 +8,15 @@
     "release": "np",
     "prepare": "tsc"
   },
+  "repository": "git@github.com:galElmalah/app-local-store.git",
+  "keywords": [
+    "storage",
+    "db",
+    "persist",
+    "data",
+    "store",
+    "config"
+  ],
   "files": [
     "dist"
   ],
