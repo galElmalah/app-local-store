@@ -19,84 +19,73 @@ describe('appDataStore', () => {
     key: 'value',
   };
 
+  const makeStore = async (name = appName, useCache = true) => {
+    const dataStore = await anAppDataStore(name, { useCache, initialData });
+    afterThis(() => dataStore.deleteStore());
+    return dataStore;
+  };
+
   it('should not create a new storage file if one already exists', async () => {
     const spy = jest.spyOn(fs.promises, 'writeFile');
-    const dataStore = await anAppDataStore(appName, { initialData });
+    await makeStore();
     await anAppDataStore(appName, { initialData });
-
     expect(spy).toBeCalledTimes(1);
-
-    afterThis(() => dataStore.deleteStore());
   });
 
   it('should delete the store file', async () => {
     const dataStore = await anAppDataStore(appName, { initialData });
+
     await dataStore.deleteStore();
 
     expect(await doesFileExist(dataStore.appStorageFilePath)).toBe(false);
   });
 
   it('should get the specified key', async () => {
-    const dataStore = await anAppDataStore(appName, { initialData });
+    const dataStore = await makeStore();
     const spy = jest.spyOn(fs.promises, 'readFile');
 
     expect(await dataStore.get('preference')).toEqual(initialData.preference);
     expect(spy).not.toBeCalled();
-
-    afterThis(() => dataStore.deleteStore());
   });
 
   it('should set the specified key value', async () => {
     const value = c.word();
-    const dataStore = await anAppDataStore(appName, { initialData });
+    const dataStore = await makeStore();
     const spy = jest.spyOn(fs.promises, 'readFile');
 
     await dataStore.set('key', value);
 
     expect(await dataStore.get('key')).toEqual(value);
     expect(spy).not.toBeCalled();
-
-    afterThis(() => dataStore.deleteStore());
   });
 
   it('should delete the specified key', async () => {
-    const dataStore = await anAppDataStore(appName, { initialData });
+    const dataStore = await makeStore();
 
     await dataStore.delete('key');
 
     expect(await dataStore.get('key')).toBeUndefined();
-
-    afterThis(() => dataStore.deleteStore());
   });
 
   describe('appDataStore without cache', () => {
     it('should set the specified key value', async () => {
       const value = c.word();
-      const dataStore = await anAppDataStore(appName, {
-        initialData,
-        useCache: false,
-      });
+      const dataStore = await makeStore(appName, false);
       const spy = jest.spyOn(fs.promises, 'readFile');
 
       await dataStore.set('key', value);
 
       expect(await dataStore.get('key')).toEqual(value);
       expect(spy).toBeCalledTimes(2);
-
-      afterThis(() => dataStore.deleteStore());
     });
 
     it('should get the the value based on the specified key', async () => {
-      const dataStore = await anAppDataStore(appName, {
-        initialData,
-        useCache: false,
-      });
+      const dataStore = await makeStore(appName, false);
+
       const spy = jest.spyOn(fs.promises, 'readFile');
 
       expect(await dataStore.get('key')).toEqual(initialData.key);
       expect(spy).toBeCalledTimes(1);
-
-      afterThis(() => dataStore.deleteStore());
     });
   });
 });

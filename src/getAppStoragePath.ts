@@ -9,7 +9,7 @@ export const LINUX_OS = 'linux';
 
 export const getAppStoragePath = (os: Platform): string => {
   const pathsMap = {
-    [MAC_OS]: () => join(homedir(), 'Library', 'Application Support'),
+    [MAC_OS]: () => join(homedir(), 'Library', 'Application\ Support'),
     [LINUX_OS]: () => join(homedir(), '.config'),
     [WINDOWS_OS]: () => join(homedir(), 'AppData', 'Roaming'),
   };
