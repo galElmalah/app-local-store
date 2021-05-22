@@ -1,3 +1,32 @@
 # app-local-store
 Easily persist app data
 
+## Usage
+
+```bash
+npm i --save app-local-store
+```
+
+```typescript
+import { anAppDataStore } from 'app-local-store';
+
+/* 
+The store data will be initialized with this data only on the first time its used.
+You can also not provide this value and set it yourself using the store "write" method.
+*/
+const dataShape = {
+  preference: {
+    user: {...},
+    system: {...}
+  },
+  scopes: ...
+  ...
+}
+const appName = 'app'
+const store = await anAppDataStore(appName, {initialData:dataShape});
+const newUserPreference = {...}
+await store.set("preference", {...initialData.preference, user: newUserPreference})
+
+// On some other run of your app when getting the user preference it will be equal to "newUserPreference"
+const { user } = await store.get("preference");
+```
