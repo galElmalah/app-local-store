@@ -5,12 +5,12 @@ import { doesFileExist } from './doesFileExist';
 
 interface StoreOptions<T> {
   useCache?: boolean;
-  initialData?:Partial<T>
+  initialData?: Partial<T>;
 }
 
 const defaultOptions = {
   useCache: true,
-  initialData: {}
+  initialData: {},
 };
 export const anAppDataStore = async <T>(
   appName: string,
@@ -24,16 +24,16 @@ export const anAppDataStore = async <T>(
   const storagePath = getAppStoragePath(platform());
   const appStorageFilePath = `${storagePath}/${appName}.json`;
 
-  let localCopy = {...initialData} as T;
+  let localCopy = { ...initialData } as T;
 
   const api = {
     appStorageFilePath,
     read: async () => {
-      if(useCache) {
-        return localCopy
+      if (useCache) {
+        return localCopy;
       }
       const data = await fs.promises.readFile(appStorageFilePath, 'utf-8');
-      
+
       return JSON.parse(data) as T;
     },
     write: async (data: T) => {
