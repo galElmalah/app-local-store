@@ -1,17 +1,7 @@
 import { platform } from 'os';
 import * as fs from 'fs';
 import { getAppStoragePath } from './getAppStoragePath';
-
-export const doesPathExists = (path: string): Promise<boolean> => {
-  return new Promise((resolve, reject) =>
-    fs.access(path, fs.constants.F_OK, (err) => {
-      if (err) {
-        resolve(false);
-      }
-      resolve(true);
-    })
-  );
-};
+import { doesFileExist } from './doesFileExist';
 
 interface StoreOptions<T> {
   useCache?: boolean;
@@ -94,7 +84,7 @@ export const anAppDataStore = async <T>(
    * Initialized the store data file.
    * This will happen when its the first time that data is being saved for that app.
    */
-  if (!(await doesPathExists(appStorageFilePath))) {
+  if (!(await doesFileExist(appStorageFilePath))) {
     await api.write(initialData as T);
   }
 
