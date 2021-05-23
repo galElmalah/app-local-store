@@ -1,5 +1,8 @@
 # app-local-store
-Easily persist app data
+Easily persist app data.
+
+## What is it good for?
+This kind of persistent mechanism fits nicely in cli apps for storing config files.
 
 ## Installation
 ```bash
