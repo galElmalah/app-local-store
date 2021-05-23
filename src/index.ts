@@ -22,11 +22,14 @@ export const anAppDataStore = async <T>(
   };
 
   const storagePath = getAppStoragePath(platform());
-  const appStorageFilePath = `${storagePath}/${appName}.json`;
+
+  const appStorageFolderPath = `${storagePath}/${appName}`;
+  const appStorageFilePath = `${appStorageFolderPath}/storage.json`;
 
   let localCopy = { ...initialData } as T;
 
   const api = {
+    appStorageFolderPath,
     appStorageFilePath,
     read: async () => {
       if (useCache) {
@@ -52,6 +55,7 @@ export const anAppDataStore = async <T>(
      */
     deleteStore: async () => {
       await fs.promises.unlink(appStorageFilePath);
+      await fs.promises.rmdir(appStorageFolderPath);
       if (useCache) {
         localCopy = null;
       }
@@ -86,6 +90,7 @@ export const anAppDataStore = async <T>(
    * This will happen when its the first time that data is being saved for that app.
    */
   if (!(await doesFileExist(appStorageFilePath))) {
+    await fs.promises.mkdir(appStorageFolderPath)
     await api.write(initialData as T);
   }
 
