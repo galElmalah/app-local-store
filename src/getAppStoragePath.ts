@@ -1,6 +1,6 @@
 import { join } from 'path';
-import { homedir } from 'os';
-import { platform } from 'os';
+import { homedir, platform } from 'os';
+
 
 type Platform = ReturnType<typeof platform>;
 export const MAC_OS = 'darwin';

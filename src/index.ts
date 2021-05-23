@@ -32,7 +32,7 @@ export const anAppDataStore = async <T>(
       if (useCache) {
         return localCopy;
       }
-      
+
       const data = await fs.promises.readFile(appStorageFilePath, 'utf-8');
 
       return JSON.parse(data) as T;
