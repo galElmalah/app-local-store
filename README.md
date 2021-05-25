@@ -2,8 +2,8 @@
 Easily persist app data.
 
 ## What is it good for?
-This kind of persistent mechanism fits nicely in cli apps for storing config files.
-
+CLI apps! 
+This package makes persisting data scoped to your app a breeze.
 ## Installation
 ```bash
 npm i --save app-local-store
