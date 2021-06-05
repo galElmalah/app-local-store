@@ -51,12 +51,11 @@ describe('appDataStore', () => {
   it('should set the specified key value', async () => {
     const value = c.word();
     const dataStore = await makeStore();
-    const spy = jest.spyOn(fs.promises, 'readFile');
+
 
     await dataStore.set('key', value);
 
     expect(await dataStore.get('key')).toEqual(value);
-    expect(spy).not.toBeCalled();
   });
 
   it('should delete the specified key', async () => {

@@ -32,10 +32,6 @@ export const anAppDataStore = async <T>(
     appStorageFolderPath,
     appStorageFilePath,
     read: async () => {
-      if (useCache) {
-        return localCopy;
-      }
-
       const data = await fs.promises.readFile(appStorageFilePath, 'utf-8');
 
       return JSON.parse(data) as T;
@@ -93,6 +89,8 @@ export const anAppDataStore = async <T>(
     await fs.promises.mkdir(appStorageFolderPath)
     await api.write(initialData as T);
   }
+
+  localCopy = {...localCopy, ...(await api.read())}
 
   return api;
 };
